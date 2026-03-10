@@ -1,6 +1,6 @@
 import { obtenerPokeApi, obtenerDetallePokemon } from "../service/api.js";
 import { coloresTipo,coloresFondo } from "../shared/colores.js";
-import { tarjetaModal } from "./tarjetaModal.js";
+import { tarjetaModal } from "../componets/tarjetaModal.js";
 
 export async function tarjetas() {
     const listaPokemon = document.getElementById("lista-pokemon");
