@@ -2,6 +2,7 @@ import { obtenerPokeApi, obtenerDetallePokemon } from "../service/api.js";
 import { coloresTipo, coloresFondo } from "../shared/colores.js";
 import { tarjetaModal } from "../componets/tarjetaModal.js";
 import { aplicarFiltros } from "./filtros.js";
+import { crearBotonFavorito } from "./marcarFavorito.js";
 
 let offset = 0;
 const limit = 151;
@@ -50,57 +51,9 @@ export async function tarjetas() {
         numero.className = "font-semibold text-gray-800 text-xs";
         numero.textContent = `#${detalle.id.toString().padStart(3, "0")}`;
 
-        const fav = document.createElement("span");
+        const botonFavorito = crearBotonFavorito(detalle.id);
 
-     
-        const svgNoFav = `<svg id="noFav" class="w-6 h-6 text-gray-400 drop-shadow-sm" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20.04 16.048a9 9 0 0 0 -12.083 -12.09m-2.32 1.678a9 9 0 1 0 12.737 12.719" /><path d="M9.884 9.874a3 3 0 1 0 4.24 4.246m.57 -3.441a3.012 3.012 0 0 0 -1.41 -1.39" /><path d="M3 12h6m7 0h5" /><path d="M3 3l18 18" /></svg>`;
-        const svgFav = `<svg id="fav" class="w-6 h-6 text-red-500 drop-shadow-md" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M3 12h6" /><path d="M15 12h6" /></svg>`;
-
-        
-        const botonFav = document.createElement("button");
-        botonFav.className = "absolute top-2 right-2 p-1 cursor-pointer transition-transform hover:scale-125 z-10"; 
-        
-        
-        // Leemos la lista de favoritos guardada (si no hay nada, creamos un array vacío)
-        let favoritosGuardados = JSON.parse(localStorage.getItem('misFavoritos')) || [];
-        
-        // Comprobamos si el ID de ESTE Pokémon está en el array de favoritos
-        let esFavorito = favoritosGuardados.includes(detalle.id); 
-
-        // Ponemos el SVG correspondiente al cargar la tarjeta por primera vez
-        botonFav.innerHTML = esFavorito ? svgFav : svgNoFav;
-
-        // El evento de clic para alternar
-        botonFav.addEventListener("click", (evento) => {
-            evento.stopPropagation(); 
-            
-            // Volvemos a leer el localStorage por si añadiste otro favorito hace un segundo
-            let favoritosActualizados = JSON.parse(localStorage.getItem('misFavoritos')) || [];
-
-            esFavorito = !esFavorito; 
-
-            if (esFavorito) {
-                botonFav.innerHTML = svgFav;
-                // Si lo marcamos como favorito, metemos su ID al array (si no estaba ya)
-                if (!favoritosActualizados.includes(detalle.id)) {
-                    favoritosActualizados.push(detalle.id);
-                }
-            } else {
-                botonFav.innerHTML = svgNoFav;
-                // Si lo desmarcamos, filtramos el array para quitar su ID
-                favoritosActualizados = favoritosActualizados.filter(id => id !== detalle.id);
-            }
-
-            
-            // Guardamos el array actualizado en el localStorage, convertido a texto
-            localStorage.setItem('misFavoritos', JSON.stringify(favoritosActualizados));
-        });
-
-        
         li.classList.add("relative");
-
-    
-        li.appendChild(botonFav);
 
         const nombre = document.createElement("span");
         nombre.className = "text-black capitalize";
@@ -119,7 +72,7 @@ export async function tarjetas() {
             tipo2.textContent = tipoSegundo;
             contendorTipo.appendChild(tipo2);
         }
-
+        li.appendChild(botonFavorito);
         li.appendChild(numero);
         li.appendChild(img);
 
@@ -131,7 +84,6 @@ export async function tarjetas() {
             modal.abrirModal();
         });
 
-        li.append(fav)
 
         listaPokemon.appendChild(li);
     }

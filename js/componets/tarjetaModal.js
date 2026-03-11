@@ -1,3 +1,5 @@
+import { crearBotonFavorito } from "../features/marcarFavorito.js";
+
 export function tarjetaModal(detalle, coloresTipo) {
     const pantallaCompleta = document.createElement("div");
     pantallaCompleta.className = "hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50";
@@ -27,8 +29,8 @@ export function tarjetaModal(detalle, coloresTipo) {
     nombre.className = "text-black text-2xl font-bold capitalize";
     nombre.textContent = detalle.name;
 
-    const descripcion=document.createElement("p");
-    nombre.className="text-black text-xl "
+    const descripcion = document.createElement("p");
+    nombre.className = "text-black text-xl "
 
     const contenedorTipo = document.createElement("div");
     contenedorTipo.className = "flex gap-2";
@@ -46,6 +48,9 @@ export function tarjetaModal(detalle, coloresTipo) {
         badge2.textContent = tipoSegundo.charAt(0).toUpperCase() + tipoSegundo.slice(1);
         contenedorTipo.appendChild(badge2);
     }
+
+    const botonFavorito = crearBotonFavorito(detalle.id);
+
 
     // STATS
     const contenedorStats = document.createElement("div");
@@ -80,7 +85,7 @@ export function tarjetaModal(detalle, coloresTipo) {
         contenedorStats.appendChild(fila);
     });
 
-    contenedorDatos.append(img, numero, nombre, contenedorTipo);
+    contenedorDatos.append(botonFavorito, img, numero, nombre, contenedorTipo);
     ventanaDetalles.append(botonCerrar, contenedorDatos, contenedorStats);
     pantallaCompleta.appendChild(ventanaDetalles);
     document.body.appendChild(pantallaCompleta);
