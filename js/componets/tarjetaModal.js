@@ -27,13 +27,16 @@ export function tarjetaModal(detalle, coloresTipo) {
     nombre.className = "text-black text-2xl font-bold capitalize";
     nombre.textContent = detalle.name;
 
+    const descripcion=document.createElement("p");
+    nombre.className="text-black text-xl "
+
     const contenedorTipo = document.createElement("div");
     contenedorTipo.className = "flex gap-2";
 
     const tipo1 = detalle.types[0].type.name;
     const badge1 = document.createElement("span");
-    badge1.className = `text-white text-xs px-3 py-1 rounded-full ${coloresTipo[tipo1] || "bg-gray-500"}`;
-    badge1.textContent = tipo1.charAt(0).toUpperCase() + tipo1.slice(1);
+    badge1.className = `text-white text-xs px-3 py-1 rounded-full ${coloresTipo[tipo1] || "bg-gray-500"} capitalize`;
+    badge1.textContent = tipo1;
     contenedorTipo.appendChild(badge1);
 
     if (detalle.types[1]) {

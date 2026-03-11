@@ -9,17 +9,37 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="./img/pokedex.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .skeleton {
+            background: linear-gradient(90deg, #2e2e2e 25%, #3a3a3a 50%, #2e2e2e 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 3px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header id="cabecera" class="flex flex-col items-center text-center py-4 bg-red-600 gap-4">
         <h1 class="text-5xl md:text-8xl font-bold text-yellow-500 text-shadow [text-shadow:_2px_2px_2px_#6390F0]">
             POKÉDEX</h1>
-        <input type="text" name="buscadorPokemon" id="buscadorPokemon" placeholder="Pokémon/Tipo/NºPokedex" class="bg-white md:w-250 w-xs px-2 rounded">
+        <nav id="nav-tipos" class="flex flex-wrap gap-2"></nav>
+        <input type="text" name="buscadorPokemon" id="buscadorPokemon" placeholder="Pokémon/Tipo/NºPokedex"
+            class="bg-white md:w-250 w-xs px-2 rounded">
     </header>
     <main id="pokedex" class="bg-gradient-to-br from-blue-400 via-blue-200 to-blue-100 min-h-screen">
-        <ul id="lista-pokemon" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></ul>
-        
+        <ul id="lista-pokemon" class=" gap md:flex md:flex-wrap"></ul>
+        <div id="final-scroll" class="h-10"></div>
     </main>
     <footer></footer>
     <script type="module" src="./js/app.js"></script>

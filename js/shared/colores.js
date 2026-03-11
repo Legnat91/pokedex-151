@@ -16,7 +16,7 @@ export const coloresTipo = {
     rock: "bg-yellow-600",
     bug: "bg-lime-500",
     ghost: "bg-purple-800",
-    steel: "bg-gray-500"
+    steel: "bg-gray-600"
 };
 
 export const coloresFondo = {
@@ -25,11 +25,11 @@ export const coloresFondo = {
     water: "bg-blue-400",
     electric: "bg-yellow-300",
     psychic: "bg-pink-300",
-    ice: "bg-cyan-300",
+    ice: "bg-cyan-100",
     dragon: "bg-purple-300",
-    dark: "bg-gray-300",
-    fairy: "bg-pink-300",
-    normal: "bg-gray-300",
+    dark: "bg-gray-400",
+    fairy: "bg-pink-200",
+    normal: "bg-gray-100",
     fighting: "bg-red-300",
     flying: "bg-indigo-300",
     poison: "bg-purple-300",

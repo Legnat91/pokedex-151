@@ -1,21 +1,39 @@
 import { obtenerPokeApi, obtenerDetallePokemon } from "../service/api.js";
-import { coloresTipo,coloresFondo } from "../shared/colores.js";
+import { coloresTipo, coloresFondo } from "../shared/colores.js";
 import { tarjetaModal } from "../componets/tarjetaModal.js";
 
+let offset = 0;
+const limit = 20;
+const MAX_POKEMON = 151;
+let cargando = false;
+
 export async function tarjetas() {
+    if (cargando) {
+        return;
+    }
+
+    if (offset >= MAX_POKEMON) {
+        return;
+    }
+
+    cargando = true;
+
     const listaPokemon = document.getElementById("lista-pokemon");
+    const limiteReal = Math.min(limit, MAX_POKEMON - offset);
 
-    
-    const datos = await obtenerPokeApi();
+    const datos = await obtenerPokeApi(limiteReal, offset);
 
-    for (const pokemon of datos.results) {
-        const detalle = await obtenerDetallePokemon(pokemon.url);
+    const promesasDetalles = datos.results.map((pokemon) =>
+        obtenerDetallePokemon(pokemon.url)
+    );
 
+    const detallesPokemon = await Promise.all(promesasDetalles);
+
+    for (const detalle of detallesPokemon) {
         const tipo = detalle.types[0].type.name;
 
-
         const li = document.createElement("li");
-        li.className = `flex flex-col items-center p-3 mx-2 mt-2 bg-white/40 backdrop-blur-md border border-white/50 rounded-lg shadow hover:${coloresFondo[tipo]} transition cursor-pointer`;
+        li.className = `flex flex-col items-center p-3 mx-4 mt-3 bg-white/60 hover:${coloresFondo[tipo]} backdrop-blur-md border border-white/50 rounded-lg shadow transition cursor-pointer hover:scale-105`;
 
         const contendorTipo = document.createElement("div");
         contendorTipo.className = "flex gap-2";
@@ -30,21 +48,20 @@ export async function tarjetas() {
         numero.textContent = `Nº: ${detalle.id}`;
 
         const nombre = document.createElement("span");
-        nombre.className = "text-black";
-        nombre.textContent = detalle.name.charAt(0).toUpperCase() + detalle.name.slice(1);
-
+        nombre.className = "text-black capitalize";
+        nombre.textContent = detalle.name;
 
         const tipo1 = document.createElement("span");
-        tipo1.className = `text-white text-xs p-1 rounded ${coloresTipo[tipo]}`;
-        tipo1.textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        tipo1.className = `text-white text-xs p-1 rounded ${coloresTipo[tipo]} capitalize`;
+        tipo1.textContent = tipo;
 
         contendorTipo.appendChild(tipo1);
 
         if (detalle.types[1]) {
             const tipoSegundo = detalle.types[1].type.name;
             const tipo2 = document.createElement("span");
-            tipo2.className = `text-white text-xs p-1 rounded ${coloresTipo[tipoSegundo]}`
-            tipo2.textContent = tipoSegundo.charAt(0).toUpperCase() + tipoSegundo.slice(1);
+            tipo2.className = `text-white text-xs p-1 rounded ${coloresTipo[tipoSegundo]} capitalize`;
+            tipo2.textContent = tipoSegundo;
             contendorTipo.appendChild(tipo2);
         }
 
@@ -59,6 +76,16 @@ export async function tarjetas() {
         });
 
         listaPokemon.appendChild(li);
-
     }
+
+    offset += limiteReal;
+    cargando = false;
+}
+
+export function getOffset() {
+    return offset;
+}
+
+export function getMaxPokemon() {
+    return MAX_POKEMON;
 }
