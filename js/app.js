@@ -6,6 +6,8 @@ import { scrollInfinito } from "./features/scroll.js";
 import { tarjetas } from "./features/tarjeta.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
+
     await tarjetas();
 
     ocultarTarjetaCarga();

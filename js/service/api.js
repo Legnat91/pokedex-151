@@ -50,3 +50,38 @@ export async function buscarPokemon(nombre) {
     }
 
 }
+export async function obtenerEvoluciones(urlEspecie) {
+    try {
+        // Buscamos la especie para conseguir la URL de la cadena de evolución
+        const resEspecie = await fetch(urlEspecie);
+        const dataEspecie = await resEspecie.json();
+
+        //  Buscamos la cadena de evolución
+        const resEvolucion = await fetch(dataEspecie.evolution_chain.url);
+        const dataEvolucion = await resEvolucion.json();
+
+        //  Extraemos las evoluciones del JSON
+        const cadena = [];
+        let actual = dataEvolucion.chain;
+
+        // Recorremos la cadena mientras haya evoluciones
+        do {
+            const nombre = actual.species.name;
+            
+            const urlParts = actual.species.url.split("/");
+            const id = urlParts[urlParts.length - 2];
+            const imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+            cadena.push({ nombre, imagen });
+
+            
+            actual = actual.evolves_to[0]; 
+        } while (actual && actual.hasOwnProperty('evolves_to'));
+
+        return cadena;
+
+    } catch (error) {
+        console.error("Error obteniendo evoluciones:", error);
+        return [];
+    }
+}
