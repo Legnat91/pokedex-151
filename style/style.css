@@ -1,0 +1,31 @@
+
+@font-face {
+        font-family: "pokemon";
+        src: url("../fonts/pokemon.ttf") format("truetype");
+    }
+
+    /* Forzamos a toda la página a usarla */
+    body {
+        font-family: "pokemon", sans-serif !important;
+        font-size: 12px;
+    }
+
+
+.skeleton {
+            background-image: url("./img/reverso-carta.png");
+            background-size: cover;
+            background-position: center;
+            animation: shimmer 1.5s infinite;
+            border-radius: 3px;
+
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }

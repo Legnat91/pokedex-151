@@ -9,36 +9,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="./img/pokedex.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        .skeleton {
-            background-image: url("./img/reverso-carta.png");
-            background-size: cover;
-            background-position: center;
-            animation: shimmer 1.5s infinite;
-            border-radius: 3px;
-
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0;
-            }
-
-            100% {
-                background-position: -200% 0;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./style/style.css">    
+    
 </head>
 
 <body>
     <header id="cabecera" class="flex flex-col items-center text-center py-4 bg-red-600 gap-4">
         <h1 class="text-5xl md:text-8xl font-bold text-yellow-500 text-shadow [text-shadow:_2px_2px_2px_#6390F0]">
-            <img src="./img/titulo.png"></img>
+            <img src="./img/titulo.png" class="w-xs"></img>
         </h1>
         <nav id="nav-tipos" class="flex flex-wrap gap-2 justify-center"></nav>
         <input type="text" name="buscadorPokemon" id="buscadorPokemon" placeholder="Buscar Pokemon"
-            class="bg-white md:w-250 w-xs px-2 rounded">
+            class="bg-white md:w-250 w-xs md:w-2xl md:h-10 px-2 rounded">
     </header>
     <main id="pokedex" class="bg-gradient-to-br from-blue-400 via-blue-200 to-blue-100 min-h-screen">
         <ul id="skeleton-pokemon" class="flex md:flex md:flex-wrap "></ul>
