@@ -1,9 +1,10 @@
 import { obtenerPokeApi, obtenerDetallePokemon } from "../service/api.js";
 import { coloresTipo, coloresFondo } from "../shared/colores.js";
 import { tarjetaModal } from "../componets/tarjetaModal.js";
+import { aplicarFiltros } from "./filtros.js";
 
 let offset = 0;
-const limit = 20;
+const limit = 151;
 const MAX_POKEMON = 151;
 let cargando = false;
 
@@ -34,6 +35,8 @@ export async function tarjetas() {
 
         const li = document.createElement("li");
         li.className = `flex flex-col items-center p-3 mx-4 mt-3 bg-white/60 hover:${coloresFondo[tipo]} backdrop-blur-md border border-white/50 rounded-lg shadow transition cursor-pointer hover:scale-105`;
+        li.dataset.tipo = detalle.types.map(tipo => tipo.type.name).join(" ");
+        li.dataset.nombre = detalle.name.toLowerCase();
 
         const contendorTipo = document.createElement("div");
         contendorTipo.className = "flex gap-2";
@@ -44,8 +47,8 @@ export async function tarjetas() {
         img.src = detalle.sprites.front_default;
 
         const numero = document.createElement("span");
-        numero.className = "font-semibold text-gray-800";
-        numero.textContent = `Nº: ${detalle.id}`;
+        numero.className = "font-semibold text-gray-800 text-xs";
+        numero.textContent = `#${detalle.id.toString().padStart(3, "0")}`;
 
         const nombre = document.createElement("span");
         nombre.className = "text-black capitalize";
@@ -65,8 +68,9 @@ export async function tarjetas() {
             contendorTipo.appendChild(tipo2);
         }
 
-        li.appendChild(img);
         li.appendChild(numero);
+        li.appendChild(img);
+
         li.appendChild(nombre);
         li.appendChild(contendorTipo);
 
@@ -80,6 +84,7 @@ export async function tarjetas() {
 
     offset += limiteReal;
     cargando = false;
+    aplicarFiltros();
 }
 
 export function getOffset() {

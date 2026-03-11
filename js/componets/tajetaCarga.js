@@ -1,26 +1,17 @@
-const contenedor = document.getElementById("lista-pokemon");
+const contenedorSkeleton = document.getElementById("skeleton-pokemon");
 
-export async function tarjetaCarga(carga =40) {
-    
+export function mostrarTarjetaCarga(carga = 20) {
+    contenedorSkeleton.innerHTML = "";
+
     for (let i = 0; i < carga; i++) {
-
-        contenedor.innerHTML += `
-      <div class="bg-zinc-900 rounded-2xl p-4 shadow-md">
-        <div class="skeleton h-36 w-full rounded-xl mb-4"></div>
-        <div class="skeleton h-6 w-2/3 mb-2"></div>
-        <div class="skeleton h-4 w-1/3 mb-4"></div>
-        <div class="flex gap-2">
-          <div class="skeleton h-6 w-16 rounded-full"></div>
-          <div class="skeleton h-6 w-16 rounded-full"></div>
-        </div>
-      </div>
-    `;
-
+        contenedorSkeleton.innerHTML += `
+          <li class="relative mx-4 mt-3 w-40 md:w-56 h-56 md:h-72 rounded-lg overflow-hidden shadow">
+    <div class="skeleton absolute inset-0"></div>
+</li>
+        `;
     }
-    new Promise((resolve, reject) => {
-        setTimeout(() => {
-            contenedor.innerHTML = "";
-        }, 2000)
-    })
-    return true;
+}
+
+export function ocultarTarjetaCarga() {
+    contenedorSkeleton.innerHTML = "";
 }

@@ -11,10 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         .skeleton {
-            background: linear-gradient(90deg, #2e2e2e 25%, #3a3a3a 50%, #2e2e2e 75%);
-            background-size: 200% 100%;
+            background-image: url("./img/reverso-carta.png");
+            background-size: cover;
+            background-position: center;
             animation: shimmer 1.5s infinite;
             border-radius: 3px;
+
         }
 
         @keyframes shimmer {
@@ -32,13 +34,18 @@
 <body>
     <header id="cabecera" class="flex flex-col items-center text-center py-4 bg-red-600 gap-4">
         <h1 class="text-5xl md:text-8xl font-bold text-yellow-500 text-shadow [text-shadow:_2px_2px_2px_#6390F0]">
-            POKÉDEX</h1>
-        <nav id="nav-tipos" class="flex flex-wrap gap-2"></nav>
-        <input type="text" name="buscadorPokemon" id="buscadorPokemon" placeholder="Pokémon/Tipo/NºPokedex"
+            <img src="./img/titulo.png"></img>
+        </h1>
+        <nav id="nav-tipos" class="flex flex-wrap gap-2 justify-center"></nav>
+        <input type="text" name="buscadorPokemon" id="buscadorPokemon" placeholder="Buscar Pokemon"
             class="bg-white md:w-250 w-xs px-2 rounded">
     </header>
     <main id="pokedex" class="bg-gradient-to-br from-blue-400 via-blue-200 to-blue-100 min-h-screen">
-        <ul id="lista-pokemon" class=" gap md:flex md:flex-wrap"></ul>
+        <ul id="skeleton-pokemon" class="flex md:flex md:flex-wrap "></ul>
+        <ul id="lista-pokemon" class="gap md:flex md:flex-wrap items-center justify-center"></ul>
+        <div id="mensaje-no-encontrado" class="flex items-center justify-center text-xl text-white mt-10 hidden w-full">
+            <img src="./img/nofound.png" alt="">
+        </div>
         <div id="final-scroll" class="h-10"></div>
     </main>
     <footer></footer>
