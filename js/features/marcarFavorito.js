@@ -35,6 +35,6 @@ export function crearBotonFavorito(pokemonId) {
         localStorage.setItem('misFavoritos', JSON.stringify(favoritosActualizados));
     });
 
-    // ¡MUY IMPORTANTE! Devolvemos el botón ya configurado
+    
     return botonFav;
 }

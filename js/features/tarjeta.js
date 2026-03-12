@@ -4,6 +4,7 @@ import { tarjetaModal } from "../componets/tarjetaModal.js";
 import { aplicarFiltros } from "./filtros.js";
 import { crearBotonFavorito } from "./marcarFavorito.js";
 import { mostrarTarjetaCarga, ocultarTarjetaCarga } from "../componets/tajetaCarga.js";
+
 let offset = 0;
 const limit = 151;
 const MAX_POKEMON = 151;
@@ -23,10 +24,10 @@ export async function tarjetas() {
     const listaPokemon = document.getElementById("lista-pokemon");
     const limiteReal = Math.min(limit, MAX_POKEMON - offset);
 
-    
-    mostrarTarjetaCarga(limiteReal); 
 
-    
+    mostrarTarjetaCarga(limiteReal);
+
+
     const datos = await obtenerPokeApi(limiteReal, offset);
 
     const promesasDetalles = datos.results.map((pokemon) =>
@@ -35,9 +36,9 @@ export async function tarjetas() {
 
     const detallesPokemon = await Promise.all(promesasDetalles);
 
- 
+
     ocultarTarjetaCarga();
-    
+
     for (const detalle of detallesPokemon) {
         const tipo = detalle.types[0].type.name;
 
@@ -45,7 +46,8 @@ export async function tarjetas() {
         li.className = `font-pokemon flex flex-col items-center p-3 mx-4 mt-3 bg-white/60 hover:${coloresFondo[tipo]} backdrop-blur-md border border-white/50 rounded-lg shadow transition cursor-pointer hover:scale-105`;
         li.dataset.tipo = detalle.types.map(tipo => tipo.type.name).join(" ");
         li.dataset.nombre = detalle.name.toLowerCase();
-
+        li.dataset.id = detalle.id;
+        
         const contendorTipo = document.createElement("div");
         contendorTipo.className = "flex gap-2";
 
