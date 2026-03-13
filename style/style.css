@@ -1,4 +1,20 @@
 
+
+#fav,#noFav{
+    cursor: url('../img/cursor_cerrado.png') 16 16, auto;
+}
+li,body{    cursor: url('../img/pokedex_cerrada.png') 16 16, auto;
+}
+
+#fav:active,#noFav:active{
+    cursor: url('../img/curor_abierto.png'), auto !important;
+}
+li:active{
+    cursor: url('../img/pokedex_abierta.png'), auto !important;
+}
+
+
+
 @font-face {
         font-family: "pokemon";
         src: url("../fonts/pokemon.ttf") format("truetype");
