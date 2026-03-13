@@ -31,7 +31,7 @@ export function tarjetaModal(detalle, coloresTipo) {
     nombre.textContent = detalle.name;
 
     const descripcion = document.createElement("p");
-    nombre.className = "text-black text-xl "
+    descripcion.className = "text-black text-xl "
 
     const contenedorTipo = document.createElement("div");
     contenedorTipo.className = "flex gap-2";

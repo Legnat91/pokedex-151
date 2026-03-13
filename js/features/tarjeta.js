@@ -1,41 +1,71 @@
-import { obtenerPokeApi, obtenerDetallePokemon } from "../service/api.js";
+import { obtenerListaMaestra, obtenerDetallePokemon } from "../service/api.js";
 import { coloresTipo, coloresFondo } from "../shared/colores.js";
 import { tarjetaModal } from "../componets/tarjetaModal.js";
-import { aplicarFiltros } from "./filtros.js";
 import { crearBotonFavorito } from "./marcarFavorito.js";
 import { mostrarTarjetaCarga, ocultarTarjetaCarga } from "../componets/tajetaCarga.js";
 
+let listaActualUrls = []; 
 let offset = 0;
-const limit = 151;
-const MAX_POKEMON = 151;
+const limit = 20;
 let cargando = false;
+let actualizando = false; 
 
-export async function tarjetas() {
-    if (cargando) {
-        return;
+const listaPokemonDOM = document.getElementById("lista-pokemon");
+const mensajeNoEncontrado = document.getElementById("mensaje-no-encontrado");
+
+const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+export async function actualizarVista(tiposSeleccionados, textoBusqueda, mostrarFavoritos) {
+    actualizando = true; 
+    cargando = false;    
+
+    listaPokemonDOM.innerHTML = "";
+    offset = 0;
+    mostrarTarjetaCarga(10); 
+
+    let lista = await obtenerListaMaestra(tiposSeleccionados);
+
+    if (textoBusqueda !== "") {
+        lista = lista.filter(p => p.name.includes(textoBusqueda));
     }
 
-    if (offset >= MAX_POKEMON) {
-        return;
+    if (mostrarFavoritos) {
+        const favs = JSON.parse(localStorage.getItem('misFavoritos')) || [];
+        lista = lista.filter(p => {
+            const id = parseInt(p.url.split('/').filter(Boolean).pop());
+            return favs.includes(id);
+        });
     }
+
+    listaActualUrls = lista;
+    ocultarTarjetaCarga();
+
+    actualizando = false; 
+
+    if (listaActualUrls.length === 0) {
+        mensajeNoEncontrado.classList.remove("hidden");
+    } else {
+        mensajeNoEncontrado.classList.add("hidden");
+        await cargarPagina(); 
+    }
+}
+
+
+export async function cargarPagina() {
+    // Si estamos filtrando (actualizando) o cargando, el observer rebota aquí
+    if (cargando || actualizando) return; 
+    if (offset >= listaActualUrls.length) return; 
 
     cargando = true;
-
-    const listaPokemon = document.getElementById("lista-pokemon");
-    const limiteReal = Math.min(limit, MAX_POKEMON - offset);
-
+    const limiteReal = Math.min(limit, listaActualUrls.length - offset);
+    
+    const urlsPagina = listaActualUrls.slice(offset, offset + limiteReal);
 
     mostrarTarjetaCarga(limiteReal);
+    await esperar(1000); 
 
-
-    const datos = await obtenerPokeApi(limiteReal, offset);
-
-    const promesasDetalles = datos.results.map((pokemon) =>
-        obtenerDetallePokemon(pokemon.url)
-    );
-
+    const promesasDetalles = urlsPagina.map((p) => obtenerDetallePokemon(p.url));
     const detallesPokemon = await Promise.all(promesasDetalles);
-
 
     ocultarTarjetaCarga();
 
@@ -43,8 +73,8 @@ export async function tarjetas() {
         const tipo = detalle.types[0].type.name;
 
         const li = document.createElement("li");
-        li.className = `font-pokemon flex flex-col items-center p-3 mx-4 mt-3 bg-white/60 hover:${coloresFondo[tipo]} backdrop-blur-md border border-white/50 rounded-lg shadow transition cursor-pointer hover:scale-105`;
-        li.dataset.tipo = detalle.types.map(tipo => tipo.type.name).join(" ");
+        li.className = `font-pokemon flex flex-col items-center p-3 mx-4 mt-3 bg-white/60 hover:${coloresFondo[tipo]} backdrop-blur-md border border-white/50 rounded-lg shadow transition cursor-pointer hover:scale-105 relative`;
+        li.dataset.tipo = detalle.types.map(t => t.type.name).join(" ");
         li.dataset.nombre = detalle.name.toLowerCase();
         li.dataset.id = detalle.id;
         
@@ -62,8 +92,6 @@ export async function tarjetas() {
 
         const botonFavorito = crearBotonFavorito(detalle.id);
 
-        li.classList.add("relative");
-
         const nombre = document.createElement("span");
         nombre.className = "text-black capitalize";
         nombre.textContent = detalle.name;
@@ -71,7 +99,6 @@ export async function tarjetas() {
         const tipo1 = document.createElement("span");
         tipo1.className = `text-white text-xs p-1 rounded ${coloresTipo[tipo]} capitalize`;
         tipo1.textContent = tipo;
-
         contendorTipo.appendChild(tipo1);
 
         if (detalle.types[1]) {
@@ -81,31 +108,19 @@ export async function tarjetas() {
             tipo2.textContent = tipoSegundo;
             contendorTipo.appendChild(tipo2);
         }
-        li.appendChild(botonFavorito);
-        li.appendChild(numero);
-        li.appendChild(img);
-
-        li.appendChild(nombre);
-        li.appendChild(contendorTipo);
+        
+        li.append(botonFavorito, numero, img, nombre, contendorTipo);
 
         li.addEventListener("click", () => {
             const modal = tarjetaModal(detalle, coloresTipo);
             modal.abrirModal();
         });
 
-
-        listaPokemon.appendChild(li);
+        listaPokemonDOM.appendChild(li);
     }
 
     offset += limiteReal;
     cargando = false;
-    aplicarFiltros();
 }
 
-export function getOffset() {
-    return offset;
-}
-
-export function getMaxPokemon() {
-    return MAX_POKEMON;
-}
+export function getOffset() { return offset; }

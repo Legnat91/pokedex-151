@@ -1,14 +1,26 @@
+import { actualizarVista } from "./tarjeta.js";
+
+//Variables de estado globales
 let textoBusqueda = "";
-let tipoSeleccionado = "todos";
+let tiposSeleccionados = []; 
 let mostrarFavoritos = false; 
 
+// Modificadores de estado
 export function setTextoBusqueda(texto) {
     textoBusqueda = texto.toLowerCase().trim();
     aplicarFiltros();
 }
 
-export function setTipoSeleccionado(tipo) {
-    tipoSeleccionado = tipo;
+export function toggleTipoSeleccionado(tipo) {
+    if (tipo === "todos") {
+        tiposSeleccionados = []; 
+    } else {
+        if (tiposSeleccionados.includes(tipo)) {
+            tiposSeleccionados = tiposSeleccionados.filter(t => t !== tipo);
+        } else {
+            tiposSeleccionados.push(tipo);
+        }
+    }
     aplicarFiltros();
 }
 
@@ -17,30 +29,7 @@ export function modoFiltroFavorito(activo) {
     aplicarFiltros();
 }
 
+//  El ejecutor principal
 export function aplicarFiltros() {
-    const tarjetas = document.querySelectorAll("#lista-pokemon li");
-    const favoritosActuales = JSON.parse(localStorage.getItem('misFavoritos')) || [];
-
-    tarjetas.forEach((tarjeta) => {
-        const nombre = tarjeta.dataset.nombre;
-        const tipos = tarjeta.dataset.tipo;
-        const id = parseInt(tarjeta.dataset.id);
-
-        const coincideBusqueda =
-            textoBusqueda === "" || nombre.includes(textoBusqueda);
-
-        const coincideTipo =
-            tipoSeleccionado === "todos" || tipos.includes(tipoSeleccionado);
-
-        const esFavorito = favoritosActuales.includes(id);
-        
-        
-        const coincideFavorito = !mostrarFavoritos || esFavorito;
-
-        if (coincideBusqueda && coincideTipo && coincideFavorito) {
-            tarjeta.style.display = "flex";
-        } else {
-            tarjeta.style.display = "none";
-        }
-    });
+    actualizarVista(tiposSeleccionados, textoBusqueda, mostrarFavoritos);
 }

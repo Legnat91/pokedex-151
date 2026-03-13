@@ -1,20 +1,11 @@
-import { tarjetas, getOffset, getMaxPokemon } from "./tarjeta.js";
-
+import { cargarPagina } from "./tarjeta.js"; 
 export function scrollInfinito() {
     const finalScroll = document.getElementById("final-scroll");
 
     const observer = new IntersectionObserver(async (entradas) => {
         if (entradas[0].isIntersecting) {
-            if (getOffset() >= getMaxPokemon()) {
-                observer.unobserve(finalScroll);
-                return;
-            }
-
-            await tarjetas();
-
-            if (getOffset() >= getMaxPokemon()) {
-                observer.unobserve(finalScroll);
-            }
+            // Simplemente llamamos a la función. Si ya no hay más, ella misma se detiene.
+            await cargarPagina();
         }
     });
 
