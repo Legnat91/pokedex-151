@@ -1,5 +1,3 @@
-
-
 #fav,#noFav{
     cursor: url('../img/cursor_cerrado.png') 16 16, auto;
 }
@@ -13,6 +11,9 @@ li:active{
     cursor: url('../img/pokedex_abierta.png'), auto !important;
 }
 
+:root{
+    user-select: none;
+}
 
 
 @font-face {
