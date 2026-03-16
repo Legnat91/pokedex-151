@@ -43,4 +43,6 @@ export function crearNavTipos() {
         modoFiltroFavorito(filtroFavoritosActivo);
     });
     navTipo.appendChild(fav);
+
+
 }

@@ -4,6 +4,10 @@
 li,body{    cursor: url('../img/pokedex_cerrada.png') 16 16, auto;
 }
 
+#nav-tipos, #nav-tipos button{
+    cursor: url('../img/mano-ico.png')16 16, auto;
+}
+
 #fav:active,#noFav:active{
     cursor: url('../img/curor_abierto.png')16 16, auto !important;
 }
