@@ -13,7 +13,8 @@
 
 </head>
 
-<body>
+<body class="flex items-start overflow-x-hidden">
+    <div id="contenido-principal" class="flex-1 min-w-0 transition-all duration-300">
     <header id="cabecera" class="flex flex-col items-center text-center py-4 bg-red-600 gap-4">
         <h1 class="text-5xl md:text-8xl font-bold text-yellow-500 text-shadow [text-shadow:_2px_2px_2px_#6390F0]">
             <img src="./img/titulo.png" class="w-xs"></img>
@@ -31,14 +32,17 @@
         <div id="mensaje-no-encontrado" class="flex items-center justify-center text-xl text-white mt-10 hidden w-full">
             <img src="./img/nofound.png" alt="">
         </div>
-        
+        <div id="panelOpciones" class="fixed flex flex-col gap-4 items-center justify-center bottom-4 right-4 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300">
         <a href="#"
-            class="fixed bottom-4 right-4 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300">
+            class="text-xl items-center justify-center bottom-4 right-4 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-400 transition-all duration-300">
             ↑
         </a>
+        <img src="./img/mochila.png" id="menuMochila" alt="mochila-pokemon" class=" rounded-full w-[40px] h-[40px] hover:bg-red-400">
+        </div>
         <div id="final-scroll" class="h-10"></div>
     </main>
     <footer id="footer" class="text-center bg-red-600"><small class="text-white">&COPY; Ángel de la Calle Fernández</small></footer>
+    </div>
     <script type="module" src="./js/app.js"></script>
 </body>
 

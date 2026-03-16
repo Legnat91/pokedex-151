@@ -4,7 +4,7 @@ import { obtenerEvoluciones } from "../service/api.js";
 export function tarjetaModal(detalle, coloresTipo) {
     const pantallaCompleta = document.createElement("div");
     pantallaCompleta.className = "hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50";
-
+    pantallaCompleta.id = "pantallaCompleta";
     const ventanaDetalles = document.createElement("div");
     ventanaDetalles.className = "relative bg-white w-full max-w-lg p-8 rounded-xl flex flex-col gap-4 shadow-xl";
 
@@ -94,7 +94,7 @@ export function tarjetaModal(detalle, coloresTipo) {
 
     const contenedorEvoluciones = document.createElement("div");
     contenedorEvoluciones.className = "flex items-center justify-center gap-2 mt-2 w-full overflow-x-auto p-2";
-    
+
     // Ponemos un texto de carga temporal
     contenedorEvoluciones.innerHTML = "<p class='text-gray-400 text-sm'>Cargando evoluciones...</p>";
 
@@ -122,14 +122,14 @@ export function tarjetaModal(detalle, coloresTipo) {
             if (index < evoluciones.length - 1) {
                 const flecha = document.createElement("div");
                 flecha.className = "text-gray-400 px-2";
-                
+
                 flecha.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></svg>`;
                 contenedorEvoluciones.appendChild(flecha);
             }
         });
     });
 
-    contenedorDatos.append(botonFavorito, img, numero, nombre, contenedorTipo,tituloEvolucion, contenedorEvoluciones);
+    contenedorDatos.append(botonFavorito, img, numero, nombre, contenedorTipo, tituloEvolucion, contenedorEvoluciones);
     ventanaDetalles.append(botonCerrar, contenedorDatos, contenedorStats);
     pantallaCompleta.appendChild(ventanaDetalles);
     document.body.appendChild(pantallaCompleta);

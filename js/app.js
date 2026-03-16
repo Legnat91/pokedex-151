@@ -1,3 +1,4 @@
+import { crearPanelEquipo } from "./componets/navEquipo.js";
 import { crearNavTipos } from "./componets/navTipos.js";
 import { buscadorPokemon } from "./features/buscador.js";
 import { activarFiltro } from "./features/filtroTipos.js";
@@ -11,5 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     crearNavTipos();
     activarFiltro();
     buscadorPokemon();
+    crearPanelEquipo();
     scrollInfinito();
 });
