@@ -77,7 +77,31 @@ export async function cargarPagina() {
         li.dataset.tipo = detalle.types.map(t => t.type.name).join(" ");
         li.dataset.nombre = detalle.name.toLowerCase();
         li.dataset.id = detalle.id;
+<<<<<<< Updated upstream
         
+=======
+        li.draggable = true; // Hacemos que el LI sea el que se arrastre
+
+        li.addEventListener("dragstart", (e) => {
+            // Guardamos el ID en el objeto de transferencia
+            e.dataTransfer.setData("text/plain", detalle.id);
+            e.dataTransfer.effectAllowed = "copy"; // Indica que vamos a copiar el dato
+
+            // Crear una imagen fantasma personalizada para que no se vea feo
+            const dragImage = li.querySelector('img');
+            e.dataTransfer.setDragImage(dragImage, 40, 40);
+
+            li.classList.add("opacity-50");
+        });
+
+        li.addEventListener("dragend", () => {
+            li.classList.remove("opacity-50");
+        });
+
+        // Evitar que la imagen interna sea la que se arrastre por separado (esto causa errores)
+
+
+>>>>>>> Stashed changes
         const contendorTipo = document.createElement("div");
         contendorTipo.className = "flex gap-2";
 
