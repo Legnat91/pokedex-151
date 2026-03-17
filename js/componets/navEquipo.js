@@ -177,10 +177,7 @@ function agregarAlEquipo(id) {
         return;
     }
 
-    if (ids.includes(parseInt(id))) {
-        lanzarAvisoGBA("Ese Pokémon ya está en tu equipo.");
-        return;
-    }
+  
 
     ids.push(parseInt(id));
     guardarEquipo(ids);
