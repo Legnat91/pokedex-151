@@ -1,31 +1,62 @@
+import { obtenerDetallePokemon } from "../service/api.js";
+import { lanzarAvisoGBA } from "./modalAviso.js";
 
+let equipoActivo = 1;
+const MAX_SLOTS = 6;
 
-<<<<<<< Updated upstream
-=======
 export function crearPanelEquipo() {
     const panel = document.createElement("div");
     panel.id = "panel-mochila";
-  
+    // Fondo verde amarillento similar a la captura
     panel.className = "fixed inset-0 z-[100] md:relative md:sticky md:top-0 md:self-start md:h-screen bg-[#88AA66] border-l-4 border-[#556644] transition-all duration-300 overflow-hidden w-0 flex flex-col font-mono";
->>>>>>> Stashed changes
 
-export function crearPanelEquipo(){
-    const panel=document.createElement("div");
-    panel.className="fixed top-0 rigth-0 w-full md:w-1/3 h-screen bg-green-300 shadow-lg p-6 transalate-x-full  transition-transform"
+    panel.innerHTML = `
+        <div class="bg-[#4488AA] border-2 border-white p-2 mb-4 shadow-[4px_4px_0px_#224455]">
+            <h2 class="text-white text-center text-xl font-bold tracking-widest uppercase">Equipo Pokémon</h2>
+        </div>
+        
+        <div class="flex justify-between gap-1 mb-4">
+            ${[1, 2, 3].map(n => `
+                <button class="slot-btn flex-1 py-1 border-2 border-[#556644] text-xs font-bold transition-all ${equipoActivo === n ? 'bg-[#EEAA44] text-white' : 'bg-[#CCDD99] text-[#556644]'}" data-slot="${n}">
+                    EQUIPO ${n}
+                </button>
+            `).join('')}
+        </div>
 
-    const listaEquipo=document.createElement("ul");
-    listaEquipo.id="listaEquipo";
-    const botonCerrar=document.createElement("button");
+        <div id="grid-equipo" class="flex flex-col gap-2 overflow-y-auto pr-1">
+            ${Array(MAX_SLOTS).fill(0).map((_, i) => `
+                <div class="drop-zone h-20 bg-[#66AABB] border-2 border-white rounded-tr-2xl rounded-bl-2xl flex items-center p-2 relative shadow-[2px_2px_0px_#335566]" data-index="${i}">
+                    <div class="w-12 h-12 bg-[#CCDD99] rounded-full border border-[#556644] flex items-center justify-center overflow-hidden">
+                        <span class="text-[#88AA66] text-2xl">+</span>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <div class="h-2 w-24 bg-[#335566]/30 rounded"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
 
-    panel.append(listaEquipo,botonCerrar);
+        <div class="mt-auto pt-4 flex flex-col gap-2">
+            <button id="borrarEquipo" class="bg-[#CC4433] border-2 border-white text-white py-2 text-sm font-bold shadow-[2px_2px_0px_#662211] hover:bg-red-500 active:translate-y-1">
+                BORRAR EQUIPO ACTUAL
+            </button>
+            <button id="cerrarMochila" class="bg-[#556644] border-2 border-white text-white py-2 text-sm font-bold shadow-[2px_2px_0px_#223311]">
+                SALIR
+            </button>
+        </div>
+    `;
 
     document.body.append(panel);
+    setupEventListeners();
+    renderEquipo();
+}
 
-   
+function setupEventListeners() {
+    const panel = document.getElementById("panel-mochila");
+    const menuMochila = document.getElementById("menuMochila");
 
-<<<<<<< Updated upstream
-=======
     const abrirMochila = () => {
+        // En móvil (w-full) ocupa todo. En escritorio (md:w-96) el ancho que definas.
         panel.classList.replace("w-0", "w-full");
         panel.classList.add("md:w-96");
 
@@ -146,6 +177,8 @@ function agregarAlEquipo(id) {
         return;
     }
 
+  
+
     ids.push(parseInt(id));
     guardarEquipo(ids);
     renderEquipo();
@@ -156,5 +189,4 @@ window.quitarDelEquipo = (id) => {
     ids = ids.filter(pId => pId !== id);
     guardarEquipo(ids);
     renderEquipo();
->>>>>>> Stashed changes
 };

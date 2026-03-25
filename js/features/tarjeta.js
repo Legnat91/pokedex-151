@@ -4,11 +4,11 @@ import { tarjetaModal } from "../componets/tarjetaModal.js";
 import { crearBotonFavorito } from "./marcarFavorito.js";
 import { mostrarTarjetaCarga, ocultarTarjetaCarga } from "../componets/tajetaCarga.js";
 
-let listaActualUrls = []; 
+let listaActualUrls = [];
 let offset = 0;
 const limit = 20;
 let cargando = false;
-let actualizando = false; 
+let actualizando = false;
 
 const listaPokemonDOM = document.getElementById("lista-pokemon");
 const mensajeNoEncontrado = document.getElementById("mensaje-no-encontrado");
@@ -16,12 +16,12 @@ const mensajeNoEncontrado = document.getElementById("mensaje-no-encontrado");
 const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function actualizarVista(tiposSeleccionados, textoBusqueda, mostrarFavoritos) {
-    actualizando = true; 
-    cargando = false;    
+    actualizando = true;
+    cargando = false;
 
     listaPokemonDOM.innerHTML = "";
     offset = 0;
-    mostrarTarjetaCarga(10); 
+    mostrarTarjetaCarga(10);
 
     let lista = await obtenerListaMaestra(tiposSeleccionados);
 
@@ -40,29 +40,29 @@ export async function actualizarVista(tiposSeleccionados, textoBusqueda, mostrar
     listaActualUrls = lista;
     ocultarTarjetaCarga();
 
-    actualizando = false; 
+    actualizando = false;
 
     if (listaActualUrls.length === 0) {
         mensajeNoEncontrado.classList.remove("hidden");
     } else {
         mensajeNoEncontrado.classList.add("hidden");
-        await cargarPagina(); 
+        await cargarPagina();
     }
 }
 
 
 export async function cargarPagina() {
     // Si estamos filtrando (actualizando) o cargando, el observer rebota aquí
-    if (cargando || actualizando) return; 
-    if (offset >= listaActualUrls.length) return; 
+    if (cargando || actualizando) return;
+    if (offset >= listaActualUrls.length) return;
 
     cargando = true;
     const limiteReal = Math.min(limit, listaActualUrls.length - offset);
-    
+
     const urlsPagina = listaActualUrls.slice(offset, offset + limiteReal);
 
     mostrarTarjetaCarga(limiteReal);
-    await esperar(1000); 
+    await esperar(1000);
 
     const promesasDetalles = urlsPagina.map((p) => obtenerDetallePokemon(p.url));
     const detallesPokemon = await Promise.all(promesasDetalles);
@@ -77,9 +77,6 @@ export async function cargarPagina() {
         li.dataset.tipo = detalle.types.map(t => t.type.name).join(" ");
         li.dataset.nombre = detalle.name.toLowerCase();
         li.dataset.id = detalle.id;
-<<<<<<< Updated upstream
-        
-=======
         li.draggable = true; // Hacemos que el LI sea el que se arrastre
 
         li.addEventListener("dragstart", (e) => {
@@ -87,7 +84,7 @@ export async function cargarPagina() {
             e.dataTransfer.setData("text/plain", detalle.id);
             e.dataTransfer.effectAllowed = "copy"; // Indica que vamos a copiar el dato
 
-            // Crear una imagen fantasma personalizada para que no se vea feo
+            // Opcional: Crear una imagen fantasma personalizada para que no se vea feo
             const dragImage = li.querySelector('img');
             e.dataTransfer.setDragImage(dragImage, 40, 40);
 
@@ -101,7 +98,6 @@ export async function cargarPagina() {
         // Evitar que la imagen interna sea la que se arrastre por separado (esto causa errores)
 
 
->>>>>>> Stashed changes
         const contendorTipo = document.createElement("div");
         contendorTipo.className = "flex gap-2";
 
@@ -109,7 +105,7 @@ export async function cargarPagina() {
         img.className = "w-16 h-16 md:w-40 md:h-40 object-cover rounded";
         img.alt = `imagen-${detalle.name}`;
         img.src = detalle.sprites.front_default;
-
+        img.draggable = false;
         const numero = document.createElement("span");
         numero.className = "font-semibold text-gray-800 text-xs";
         numero.textContent = `#${detalle.id.toString().padStart(3, "0")}`;
@@ -132,7 +128,7 @@ export async function cargarPagina() {
             tipo2.textContent = tipoSegundo;
             contendorTipo.appendChild(tipo2);
         }
-        
+
         li.append(botonFavorito, numero, img, nombre, contendorTipo);
 
         li.addEventListener("click", () => {

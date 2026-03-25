@@ -4,19 +4,23 @@
 li,body{    cursor: url('../img/pokedex_cerrada.png') 16 16, auto;
 }
 
-#nav-tipos, #nav-tipos button{
-    cursor: url('../img/mano-ico.png')16 16, auto;
+#nav-tipos, #nav-tipos button, #panelOpciones, #panelOpciones a,#panel-mochila,#panel-mochila button,#mensajeAviso, #mensajeAviso button,#pantallaCompleta button{
+    cursor: url('../img/mano-ico.png'), auto;
 }
 
 #fav:active, #noFav:active{
     cursor: url('../img/curor_abierto.png')16 16, auto !important;
 }
-li:active{
+li:active,#pantallaCompleta{
     cursor: url('../img/pokedex_abierta.png')16 16, auto !important;
 }
 
 :root{
     user-select: none;
+}
+html {
+    scrollbar-color: #e42f2f #add6ee; 
+    scrollbar-width: auto; 
 }
 
 
@@ -50,3 +54,4 @@ li:active{
                 background-position: -200% 0;
             }
         }
+
